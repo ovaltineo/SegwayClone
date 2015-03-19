@@ -55,7 +55,7 @@ Uncomment only if steer MPU6050 is vertically oriented
 /*
 Uncomment only if using MPU6050_X2 and you want to compensate for terrain banking
 */
-//#define SUBTRACT_BANK_ANGLE		// defining this will subtract board bank angle from steer angle
+#define SUBTRACT_BANK_ANGLE			1.0		// defining this will subtract board bank angle from steer angle.  Value (0 to 1) defines how much bank is used.
 
 /*
 Uncomment only if steering left and right are inverted
@@ -195,7 +195,9 @@ typedef struct
 } sensorType;
 
 
-#define	ALPHA 0.97				// used by complementary filter
+#define	ALPHA 0.97					// used by complementary filter
+#define	ALPHA_SLOW 0.997			// used by slow complementary filter
+
 
 #if defined(ROBOCLAW_CONTROLLER)
 	// use these values if using Roboclaw

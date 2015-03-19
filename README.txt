@@ -139,6 +139,8 @@ v7.2	Fixed inverted steering angle gyro and bank angle gyro.
 		Added option for exponential steering response - #define EXPONENTIAL_STEER_DIVIDER
 
 v7.3	Added option for acceleration with Roboclaw - #define ROBOCLAW_ACCELERATION in Motors.h
+
+v7.4	Fixed compile problem by adding missing ALPHA_SLOW and SUBTRACT_BANK_ANGLE value in SegwayClone.h
 		
 ***********************************************************************************************************************************		
 		
