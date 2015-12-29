@@ -198,13 +198,13 @@ float computePID(float angle, float gyro, boolean riderOn)
 	if (riderOn)
 	{
 #if defined(HX711_DOUT) && defined (HX711_REFERENCE_WEIGHT)
-  #ifdef ROBOCLAW_ENCODER_CONTROLLER
+  #if defined(ROBOCLAW_ENCODER_CONTROLLER) || defined(ROBOCLAW_CRC_ENCODER_CONTROLLER)
 		result = ((Pf_off + (Pf-Pf_off) * sample_weight/HX711_REFERENCE_WEIGHT) * 10 * angle) + ((Df_off + (Df-Df_off) * sample_weight/HX711_REFERENCE_WEIGHT) * 10 * gyro);
   #else
 		result = ((Pf_off + (Pf-Pf_off) * sample_weight/HX711_REFERENCE_WEIGHT) * angle) + ((Df_off + (Df-Df_off) * sample_weight/HX711_REFERENCE_WEIGHT) * gyro);
   #endif
 #else
-  #ifdef ROBOCLAW_ENCODER_CONTROLLER
+  #if defined(ROBOCLAW_ENCODER_CONTROLLER) || defined(ROBOCLAW_CRC_ENCODER_CONTROLLER)
 		result = (Pf * 10 * angle) + (Df * 10 * gyro);
   #else
 		result = (Pf * angle) + (Df * gyro);
@@ -213,7 +213,7 @@ float computePID(float angle, float gyro, boolean riderOn)
 	}
 	else
 	{
-#ifdef ROBOCLAW_ENCODER_CONTROLLER
+#if defined(ROBOCLAW_ENCODER_CONTROLLER) || defined(ROBOCLAW_CRC_ENCODER_CONTROLLER)
 		result = (Pf_off * 10 * angle) + (Df_off * 10 * gyro);
 #else
 		result = (Pf_off * angle) + (Df_off * gyro);
@@ -339,7 +339,7 @@ void loop()
 
 	dt = currMicros-pastMicros;
 
-#if defined(ROBOCLAW_CONTROLLER) || defined(ROBOCLAW_ENCODER_CONTROLLER) || defined(SABERTOOTH_CONTROLLER)
+#if defined(ROBOCLAW_CONTROLLER) || defined(ROBOCLAW_ENCODER_CONTROLLER) || defined(SABERTOOTH_CONTROLLER) || defined(ROBOCLAW_CRC_CONTROLLER) || defined(ROBOCLAW_CRC_ENCODER_CONTROLLER)
 	if (dt >= 12500) // check if 12500 microseconds (12.5 milliseconds) has elapsed. Needs slower rate due to 38400 bps serial
 #else	
 	if (dt >= 10000) // check if 10000 microseconds (10 milliseconds) has elapsed
@@ -490,15 +490,15 @@ void loop()
 				Vi = Vf * 100;
 			#endif
 			
-			#if defined(ROBOCLAW_CONTROLLER) || defined(ROBOCLAW_ENCODER_CONTROLLER)
+			#if defined(ROBOCLAW_CONTROLLER) || defined(ROBOCLAW_ENCODER_CONTROLLER) || defined(ROBOCLAW_CRC_CONTROLLER) || defined(ROBOCLAW_CRC_ENCODER_CONTROLLER)
 				Vf = readVoltage();
 				Vi = Vf * 100;
 				temp1 = readTemperature();
 				temp2 = temp1;
-				readCurrents();
+				//readCurrents();
 			#endif
 
-			#if defined(VOLTAGE_CHECK) || defined(ROBOCLAW_CONTROLLER) || defined(ROBOCLAW_ENCODER_CONTROLLER)
+			#if defined(VOLTAGE_CHECK) || defined(ROBOCLAW_CONTROLLER) || defined(ROBOCLAW_ENCODER_CONTROLLER) || defined(ROBOCLAW_CRC_CONTROLLER) || defined(ROBOCLAW_CRC_ENCODER_CONTROLLER)
 				if (Vf < 5)										// check if powered by USB, if so then don't alarm
 						alarmArray[ALARM_BATTERY] = 0;
 				else if (Vf < MIN_BATTERY_4)					// check if below battery level 4
@@ -533,7 +533,7 @@ void loop()
 				}
 			#endif
 
-			#if defined(TEMPERATURE_SENSORS) || defined(ROBOCLAW_CONTROLLER) || defined(ROBOCLAW_ENCODER_CONTROLLER)
+			#if defined(TEMPERATURE_SENSORS) || defined(ROBOCLAW_CONTROLLER) || defined(ROBOCLAW_ENCODER_CONTROLLER) || defined(ROBOCLAW_CRC_CONTROLLER) || defined(ROBOCLAW_CRC_ENCODER_CONTROLLER)
 				// set alarm if very hot
 				if (temp1 > MAX_TEMP || temp2 > MAX_TEMP)
 						alarmArray[ALARM_TEMP] = 1;

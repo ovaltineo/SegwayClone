@@ -127,9 +127,11 @@
 	#endif
 #endif
 
-#ifdef ROBOCLAW_CONTROLLER
-	#define MOTOR_MAX		1500
-	#define MOTOR_MAX_OFF	250				// MOTOR_MAX when rider sensor is OFF
+#if defined(ROBOCLAW_CONTROLLER) || defined(ROBOCLAW_CRC_CONTROLLER)
+//	#define MOTOR_MAX		1500
+//	#define MOTOR_MAX_OFF	250				// MOTOR_MAX when rider sensor is OFF
+	#define MOTOR_MAX		32767
+	#define MOTOR_MAX_OFF	8192				// MOTOR_MAX when rider sensor is OFF
 
 	#define ROBOCLAW_ADDRESS 0x80
 
@@ -151,7 +153,7 @@
 	#endif
 #endif
 
-#ifdef ROBOCLAW_ENCODER_CONTROLLER
+#if defined(ROBOCLAW_ENCODER_CONTROLLER) || defined(ROBOCLAW_CRC_ENCODER_CONTROLLER)
 //	#define MOTOR_MAX		40000
 	#define MOTOR_MAX		10000
 	#define MOTOR_MAX_OFF	10000		// MOTOR_MAX when rider sensor is OFF
@@ -163,6 +165,7 @@
 	#define M2_SPEED	36
 	#define READ_TEMP	82
 	#define READ_VOLT	24
+	#define READ_CURRENTS	49
 
 	#ifndef MEGA
 		// software serial pins for non-mega boards

@@ -141,6 +141,9 @@ v7.2	Fixed inverted steering angle gyro and bank angle gyro.
 v7.3	Added option for acceleration with Roboclaw - #define ROBOCLAW_ACCELERATION in Motors.h
 
 v7.4	Fixed compile problem by adding missing ALPHA_SLOW and SUBTRACT_BANK_ANGLE value in SegwayClone.h
+
+v7.5	Support for new Roboclaw firmware which uses CRC for checksum (v4.1.11 and newer) -  use #define ROBOCLAW_CRC_CONTROLLER 
+		or #define_CRC_ENCODER_CONTROLLER
 		
 ***********************************************************************************************************************************		
 		

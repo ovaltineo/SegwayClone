@@ -9,7 +9,10 @@ GY80_STEERING		- one GY80. It is used to measure board tilt and steering
 
 PWM_PWM_CONTROLLER	- use dual pin PWM + enable pin motor controller, eg BTN7960
 PWM_DIR_CONTROLLER	- use single pin PWM + direction pin motor controller  
-ROBOCLAW_CONTROLLER	- use Roboclaw motor controller.  Roboclaw must be configured for packet serial mode 38400 baud with address 0x80
+ROBOCLAW_CONTROLLER	- use Roboclaw motor controller (firmware v4.1.10 and older).  Roboclaw must be configured for packet serial mode 38400 baud with address 0x80
+ROBOCLAW_CRC_CONTROLLER	- use Roboclaw motor controller (firmware v4.1.11 and newer).  Roboclaw must be configured for packet serial mode 38400 baud with address 0x80
+ROBOCLAW_ENCODER_CONTROLLER	- use Roboclaw motor controller with encoders (firmware v4.1.10 and older).  Roboclaw must be configured for packet serial mode 38400 baud with address 0x80
+ROBOCLAW_CRC_ENCODER_CONTROLLER	- use Roboclaw motor controller with encoders (firmware v4.1.11 and newer).  Roboclaw must be configured for packet serial mode 38400 baud with address 0x80
 SABERTOOTH_CONTROLLER - use Sabertooth motor controller.  Sabertooth must be configured for packet serial mode 38400 baud with address 0x80
 PWN_SHIELD_CONTROLLER - use Elechouse dual-channel motor shield.  http://www.elechouse.com/elechouse/index.php?main_page=product_info&products_id=2179
 L298N_CONTROLLER	- use L298N motor controller with ENA, IN1, IN2, IN3, IN4, and ENB pins 
@@ -65,14 +68,16 @@ Uncomment only if steering left and right are inverted
 /*
 Uncomment one CONTROLLER type below
 */
-//#define PWM_PWM_CONTROLLER
+#define PWM_PWM_CONTROLLER
 //#define PWM_DIR_CONTROLLER
 //#define ROBOCLAW_CONTROLLER
 //#define ROBOCLAW_ENCODER_CONTROLLER
+//#define ROBOCLAW_CRC_CONTROLLER
+//#define ROBOCLAW_CRC_ENCODER_CONTROLLER
 //#define SABERTOOTH_CONTROLLER
 //#define PWM_SHIELD_CONTROLLER
 //#define L298N_CONTROLLER
-#define OSMC_CONTROLLER
+//#define OSMC_CONTROLLER
 
 /*
 Uncomment if you want to check battery voltage.  See note above for resistor divider.
@@ -199,7 +204,7 @@ typedef struct
 #define	ALPHA_SLOW 0.997			// used by slow complementary filter
 
 
-#if defined(ROBOCLAW_CONTROLLER)
+#if defined(ROBOCLAW_CONTROLLER) || defined(ROBOCLAW_CRC_CONTROLLER)
 	// use these values if using Roboclaw
 	#define KP 3.9					// proportional constant when rider is ON
 	#define KD 1.5   				// derivative constant when rider is ON
@@ -207,7 +212,7 @@ typedef struct
 	#define KP_OFF 1.8				// proportional constant when rider is OFF
 	#define KD_OFF .75 				// derivative constant when rider is OFF
 #endif
-#if defined(ROBOCLAW_ENCODER_CONTROLLER)
+#if defined(ROBOCLAW_ENCODER_CONTROLLER)  || defined(ROBOCLAW_CRC_ENCODER_CONTROLLER)
 	// use these values if using Roboclaw with encoder
 	#define KP 10.9					// proportional constant when rider is ON
 	#define KD 4.68   				// derivative constant when rider is ON

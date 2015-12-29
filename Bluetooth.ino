@@ -134,7 +134,7 @@ void processBluetooth(void)
 		}
 		else if (command=='c')	// calibrate
 		{
-	#if defined(VOLTAGE_CHECK) || defined(ROBOCLAW_CONTROLLER) || defined(ROBOCLAW_ENCODER_CONTROLLER)
+	#if defined(VOLTAGE_CHECK) || defined(ROBOCLAW_CONTROLLER) || defined(ROBOCLAW_ENCODER_CONTROLLER) || defined(ROBOCLAW_CRC_CONTROLLER) || defined(ROBOCLAW_CRC_ENCODER_CONTROLLER)
 			if (Vf < 5 || (motor > -MOTOR_MAX/10 && motor < MOTOR_MAX/10))		// lock only if using USB power or speed is less than 1/10th of MOTOR_MAX
 	#else
 			if (motor > -MOTOR_MAX/10 && motor < MOTOR_MAX/10)		// lock only if speed is less than 1/10th of MOTOR_MAX
@@ -145,7 +145,7 @@ void processBluetooth(void)
 				#ifndef POT_STEERING
 					initSteerSensor(CALIBRATE_YES);	// initialize steering tilt sensor and calibrate
 				#endif
-	#if defined(VOLTAGE_CHECK) || defined(ROBOCLAW_CONTROLLER) || defined(ROBOCLAW_ENCODER_CONTROLLER)
+	#if defined(VOLTAGE_CHECK) || defined(ROBOCLAW_CONTROLLER) || defined(ROBOCLAW_ENCODER_CONTROLLER) || defined(ROBOCLAW_CRC_CONTROLLER) || defined(ROBOCLAW_CRC_ENCODER_CONTROLLER)
 				writeIntToEEPROM(EEPROM_VOLTAGE_REF_ADDR, Vi);					// save voltage to EEPROM
 				writeIntToEEPROM(EEPROM_VOLTAGE_REF_SAVED_ADDR, PD_SAVED);			// set save flag in EEPROM
 
@@ -323,7 +323,7 @@ void processBluetooth(void)
 			Serial3.write(steer >> 8);	
 			Serial3.write(steer & 0xFF);	
 			
-		#if defined(TEMPERATURE_SENSORS) || defined(ROBOCLAW_CONTROLLER) || defined(ROBOCLAW_ENCODER_CONTROLLER)
+		#if defined(TEMPERATURE_SENSORS) || defined(ROBOCLAW_CONTROLLER) || defined(ROBOCLAW_ENCODER_CONTROLLER) || defined(ROBOCLAW_CRC_CONTROLLER) || defined(ROBOCLAW_CRC_ENCODER_CONTROLLER)
 			Serial3.write(temp1 >> 8);	
 			Serial3.write(temp1 & 0xFF);	
 
@@ -361,7 +361,7 @@ void processBluetooth(void)
 				status = status | 0b00000100;
 			if (board_angle < MIN_ANGLE || board_angle > MAX_ANGLE )
 				status = status | 0b00001000;
-		#if defined(TEMPERATURE_SENSORS) || defined(ROBOCLAW_CONTROLLER) || defined(ROBOCLAW_ENCODER_CONTROLLER)
+		#if defined(TEMPERATURE_SENSORS) || defined(ROBOCLAW_CONTROLLER) || defined(ROBOCLAW_ENCODER_CONTROLLER) || defined(ROBOCLAW_CRC_CONTROLLER) || defined(ROBOCLAW_CRC_ENCODER_CONTROLLER)
 			if (temp1 > MAX_TEMP || temp2 > MAX_TEMP)
 				status = status | 0b00010000;
 		#endif

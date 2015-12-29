@@ -12,14 +12,14 @@
 	#define kick_slope_up 40 // slope of upward ramp
 	#define kick_slope_down 4 // slope of downrard ramp
 #endif
-#if defined(ROBOCLAW_CONTROLLER)
+#if defined(ROBOCLAW_CONTROLLER) || defined(ROBOCLAW_CRC_CONTROLLER)
 	#define kick_trigger 600 // the motor speed at which to initiate a kick event
 	#define kick_trigger_off 295 // the motor speed at which to stop a kick event
 	#define kick_max 120 // the maximum allowed boost level
 	#define kick_slope_up 60 // slope of upward ramp
 	#define kick_slope_down 6 // slope of downrard ramp
 #endif
-#if defined(ROBOCLAW_ENCODER_CONTROLLER)
+#if defined(ROBOCLAW_ENCODER_CONTROLLER) || defined(ROBOCLAW_CRC_ENCODER_CONTROLLER)
 	#define kick_trigger 15600 // the motor speed at which to initiate a kick event
 	#define kick_trigger_off 7800 // the motor speed at which to stop a kick event
 	#define kick_max 3120 // the maximum allowed boost level

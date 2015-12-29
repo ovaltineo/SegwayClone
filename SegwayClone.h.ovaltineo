@@ -41,8 +41,10 @@ Uncomment one CONTROLLER type below
 //#define PWM_PWM_CONTROLLER
 //#define PWM_PWM_15KHZ_CONTROLLER
 //#define PWM_DIR_CONTROLLER
-#define ROBOCLAW_CONTROLLER
+//#define ROBOCLAW_CONTROLLER
 //#define ROBOCLAW_ENCODER_CONTROLLER
+#define ROBOCLAW_CRC_CONTROLLER
+//#define ROBOCLAW_CRC_ENCODER_CONTROLLER
 //#define SABERTOOTH_CONTROLLER
 //#define PWM_SHIELD_CONTROLLER
 //#define L298N_CONTROLLER
@@ -161,15 +163,20 @@ typedef struct
 #define	ALPHA 0.97				// used by complementary filter
 #define	ALPHA_SLOW 0.997				// used by slow complementary filter
 
-#if defined(ROBOCLAW_CONTROLLER)
+#if defined(ROBOCLAW_CONTROLLER) || defined(ROBOCLAW_CRC_CONTROLLER)
 	// use these values if using Roboclaw
-	#define KP 0.96					// proportional constant when rider is ON
-	#define KD 1.2   				// derivative constant when rider is ON
-	#define STEER_MULTIPLIER 25     // liner - adjust depending on your motor speed
-	#define KP_OFF 0.67				// proportional constant when rider is OFF
-	#define KD_OFF .72 				// derivative constant when rider is OFF
+//	#define KP 0.96					// proportional constant when rider is ON
+//	#define KD 1.2   				// derivative constant when rider is ON
+//	#define STEER_MULTIPLIER 25     // liner - adjust depending on your motor speed
+//	#define KP_OFF 0.67				// proportional constant when rider is OFF
+//	#define KD_OFF .72 				// derivative constant when rider is OFF
+	#define KP 15					// proportional constant when rider is ON
+	#define KD 20   				// derivative constant when rider is ON
+	#define STEER_MULTIPLIER 500    // liner - adjust depending on your motor speed
+	#define KP_OFF 8				// proportional constant when rider is OFF
+	#define KD_OFF 12 				// derivative constant when rider is OFF
 #endif
-#if defined(ROBOCLAW_ENCODER_CONTROLLER)
+#if defined(ROBOCLAW_ENCODER_CONTROLLER) || defined(ROBOCLAW_CRC_ENCODER_CONTROLLER)
 	// use these values if using Roboclaw with encoder
 	#define KP 10.9					// proportional constant when rider is ON
 	#define KD 4.68   				// derivative constant when rider is ON
