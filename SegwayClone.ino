@@ -65,7 +65,7 @@ static boolean locked = false;
 
 long left_motor;
 long right_motor;
-float Vref, Vf = 0;
+float Vref = 0, Vf = 0;
 int Vi;
 
 int temp1=0;
@@ -124,8 +124,8 @@ void getPD()
 	saved = readIntFromEEPROM(EEPROM_VOLTAGE_REF_SAVED_ADDR);	// get VOLTAGE_REF saved flag from EEPROM
 	if (saved == PD_SAVED)							// check if VOLTAGE_REF has been saved to EEPROM
 	{
-		int Pi = readIntFromEEPROM(EEPROM_VOLTAGE_REF_ADDR);	// read P_OFF from EEPROM
-		Vref = Pi/100.0;
+		int Vi = readIntFromEEPROM(EEPROM_VOLTAGE_REF_ADDR);	// read Vref from EEPROM
+		Vref = Vi/100.0;
 	}
 	
 #endif	
@@ -405,6 +405,12 @@ void loop()
 //			speed_adjust = computePID(board_angle, board_gyro);		// compute speed adjustment using PID routine
 			motor = motor + speed_adjust;
 
+#if defined(VOLTAGE_CHECK) || defined(ROBOCLAW_CONTROLLER) || defined(ROBOCLAW_ENCODER_CONTROLLER) || defined(ROBOCLAW_CRC_CONTROLLER) || defined(ROBOCLAW_CRC_ENCODER_CONTROLLER)
+			// compensate for voltage change
+			if (Vref > 0)
+				motor = motor * Vref/Vf;
+#endif			
+			
 			if (riderOn)
 				motorMax = MOTOR_MAX;
 			else
@@ -491,10 +497,18 @@ void loop()
 			#endif
 			
 			#if defined(ROBOCLAW_CONTROLLER) || defined(ROBOCLAW_ENCODER_CONTROLLER) || defined(ROBOCLAW_CRC_CONTROLLER) || defined(ROBOCLAW_CRC_ENCODER_CONTROLLER)
-				Vf = readVoltage();
-				Vi = Vf * 100;
-				temp1 = readTemperature();
-				temp2 = temp1;
+				float Vx = readVoltage();
+				if (Vx > 0)
+				{
+					Vf = Vx;
+					Vi = Vf * 100;
+				}
+				int Tempx = readTemperature();
+				if (Tempx > 0)
+				{
+					temp1 = Tempx;
+					temp2 = temp1;
+				}
 				//readCurrents();
 			#endif
 

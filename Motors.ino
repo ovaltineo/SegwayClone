@@ -445,6 +445,7 @@ void setPwmFrequency(byte mode)
 	int readCurrents(void)
 	{
 		byte send[2];
+		byte receive[4];
 		send[0] = ROBOCLAW_ADDRESS;
 		send[1] = READ_CURRENTS;
 		Serial1.write(send, sizeof(send));
@@ -500,19 +501,24 @@ void setPwmFrequency(byte mode)
               delayMicroseconds(100);
               timeout--;
 		} // wait
-		if (timeout)
-			command=Serial1.read();				// read checksum/crc1
-		
+		if (!timeout)
+			return -1;
+		command=Serial1.read();				// read checksum/crc1
 		
 	#if defined(ROBOCLAW_CRC_CONTROLLER) || defined(ROBOCLAW_CRC_ENCODER_CONTROLLER)
+		unsigned int crc = command << 8;
 		timeout = 50; //set timeout to 5ms
 		while (!Serial1.available() && timeout > 0)
 		{
               delayMicroseconds(100);
               timeout--;
 		} // wait
-		if (timeout)
-			command=Serial1.read();				// read crc2
+		if (!timeout)
+			return -1;
+		command=Serial1.read();				// read crc2
+		crc = crc + command;
+		if (crc != crc16(receive, sizeof(receive)))
+			return 0;
 	#endif
 		return current2;
 	}
@@ -521,6 +527,7 @@ void setPwmFrequency(byte mode)
 	float readTemperature(void)
 	{
 		byte send[2];
+		byte receive[2];
 		send[0] = ROBOCLAW_ADDRESS;
 		send[1] = READ_TEMP;
 		Serial1.write(send, sizeof(send));
@@ -553,26 +560,32 @@ void setPwmFrequency(byte mode)
               delayMicroseconds(100);
               timeout--;
 		} // wait
-		if (timeout)
-			command=Serial1.read();				// read checksum/crc1
+		if (!timeout)
+			return -1;
+		command=Serial1.read();				// read checksum/crc1
 		
 	#if defined(ROBOCLAW_CRC_CONTROLLER) || defined(ROBOCLAW_CRC_ENCODER_CONTROLLER)
+		unsigned int crc = command << 8;
 		timeout = 50; //set timeout to 5ms
 		while (!Serial1.available() && timeout > 0)
 		{
               delayMicroseconds(100);
               timeout--;
 		} // wait
-		if (timeout)
-			command=Serial1.read();				// read crc2
+		if (!timeout)
+			return -1;
+		command=Serial1.read();				// read crc2
+		crc = crc + command;
+		if (crc != crc16(receive, sizeof(receive)))
+			return 0;
 	#endif
 		return temp/10.0;
 	}
 
 	float readVoltage(void)
 	{
-		//return 24.68;
 		byte send[2];
+		byte receive[2];
 		send[0] = ROBOCLAW_ADDRESS;
 		send[1] = READ_VOLT;
 		Serial1.write(send, sizeof(send));
@@ -586,6 +599,7 @@ void setPwmFrequency(byte mode)
 		if (!timeout)
 			return -1;
 		unsigned char command=Serial1.read();	// read voltage MSB
+		receive[0] = command;
 		int volt = command << 8;
 
 		timeout = 50; //set timeout to 5ms
@@ -597,6 +611,7 @@ void setPwmFrequency(byte mode)
 		if (!timeout)
 			return -1;
 		command=Serial1.read();					// read voltage LSB
+		receive[1] = command;
 		volt = volt + command;
 
 		timeout = 50; //set timeout to 5ms
@@ -605,18 +620,24 @@ void setPwmFrequency(byte mode)
               delayMicroseconds(100);
               timeout--;
 		} // wait
-		if (timeout)
-			command=Serial1.read();				// read checksum/crc1
+		if (!timeout)
+			return -1;
+		command=Serial1.read();				// read checksum/crc1
 		
 	#if defined(ROBOCLAW_CRC_CONTROLLER) || defined(ROBOCLAW_CRC_ENCODER_CONTROLLER)
+		unsigned int crc = command << 8;
 		timeout = 50; //set timeout to 5ms
 		while (!Serial1.available() && timeout > 0)
 		{
               delayMicroseconds(100);
               timeout--;
 		} // wait
-		if (timeout)
-			command=Serial1.read();				// read crc2
+		if (!timeout)
+			return -1;
+		command=Serial1.read();				// read crc2
+		crc = crc + command;
+		if (crc != crc16(receive, sizeof(receive)))
+			return 0;
 	#endif
 		return volt/10.0;
 		

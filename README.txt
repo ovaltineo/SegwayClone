@@ -144,6 +144,8 @@ v7.4	Fixed compile problem by adding missing ALPHA_SLOW and SUBTRACT_BANK_ANGLE 
 
 v7.5	Support for new Roboclaw firmware which uses CRC for checksum (v4.1.11 and newer) -  use #define ROBOCLAW_CRC_CONTROLLER 
 		or #define_CRC_ENCODER_CONTROLLER
+
+v7.6	Added battery voltage decrease compensation.  Added CRC check for voltage, temperature, and current with Roboclaw controllers.
 		
 ***********************************************************************************************************************************		
 		
