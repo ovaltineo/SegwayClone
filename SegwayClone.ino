@@ -498,6 +498,9 @@ void loop()
 			
 			#if defined(ROBOCLAW_CONTROLLER) || defined(ROBOCLAW_ENCODER_CONTROLLER) || defined(ROBOCLAW_CRC_CONTROLLER) || defined(ROBOCLAW_CRC_ENCODER_CONTROLLER)
 				float Vx = readVoltage();
+Serial.print(F(" Vx: ")); 
+Serial.println(Vx);
+				
 				if (Vx > 0)
 				{
 					Vf = Vx;

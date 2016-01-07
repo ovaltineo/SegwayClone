@@ -146,6 +146,8 @@ v7.5	Support for new Roboclaw firmware which uses CRC for checksum (v4.1.11 and 
 		or #define_CRC_ENCODER_CONTROLLER
 
 v7.6	Added battery voltage decrease compensation.  Added CRC check for voltage, temperature, and current with Roboclaw controllers.
+
+v7.7	Fixed CRC check for voltage, temperature, and current with Roboclaw controllers.
 		
 ***********************************************************************************************************************************		
 		
