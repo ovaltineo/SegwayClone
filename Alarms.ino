@@ -7,7 +7,7 @@
 // Modified by "Ovaltineo"
 // for use on DIY Segway clone
 
-static unsigned long lastAlarmTime[10] = {0,0,0,0,0,0,0,0,0,0};
+static unsigned long lastAlarmTime[11] = {0,0,0,0,0,0,0,0,0,0,0};
 static uint8_t cycleDone[5]={0,0,0,0,0}, 
                resourceIsOn[5] = {0,0,0,0,0};
 static uint32_t LastToggleTime[5] ={0,0,0,0,0};
@@ -59,7 +59,7 @@ void alarmPatternComposer(){
   
   // patternDecode(length1,length2,length3,beeppause,endpause,loop)
     resource = RESOURCE_BUZZER;																		//buzzer selected
-    if (alarmArray[ALARM_MAX_ANGLE] == 1 || alarmArray[ALARM_LEVEL] == 1) 		patternDecode(resource,50,200,200,50,50);
+    if (alarmArray[ALARM_MAX_ANGLE] == 1 || alarmArray[ALARM_LEVEL] == 1) 		patternDecode(resource,50,200,200,50,50);	// max angle
     else if (alarmArray[ALARM_BATTERY] == 4)	patternDecode(resource,200,200,200,50,1000);		//vbat critical
     else if (alarmArray[ALARM_BATTERY] == 3)	patternDecode(resource,200,200,0,50,1000);			//vbat very low
     else if (alarmArray[ALARM_BATTERY] == 2)	patternDecode(resource,200,0,0,50,1000);			//vbat low
@@ -68,6 +68,8 @@ void alarmPatternComposer(){
     else if (alarmArray[ALARM_REVERSE] == 1)	patternDecode(resource,50,0,0,50,1100);				// reversing
     else if (alarmArray[ALARM_LOCKED] == 1)		patternDecode(resource,50,50,0,50,1100);			// locked
     else if (alarmArray[ALARM_I2C] == 1)		patternDecode(resource,200,50,200,50,1100);			// I2C ERROR
+    else if (alarmArray[ALARM_RIDER] == 1)	patternDecode(resource,50,0,0,50,1000);					//rider on
+    else if (alarmArray[ALARM_RIDER] == 2)	patternDecode(resource,200,0,0,50,1000);				//rider off
     else if (SequenceActive[(uint8_t)resource] == 1) patternDecode(resource,0,0,0,0,0);				// finish last sequence if not finished yet
     else turnOff(resource);																			// turn off the resource
 #ifdef VOLTAGE_LED
@@ -81,6 +83,15 @@ void alarmPatternComposer(){
 	unsigned long currMillis;
 
 	currMillis = millis();
+	if (alarmArray[ALARM_RIDER] == 1 && currMillis-lastAlarmTime[ALARM_RIDER] > ALARM_GAP_MILLIS)
+	{
+		Serial2.write(VOICE_RIDER_ON);
+		lastAlarmTime[ALARM_RIDER] = currMillis;
+	} else if (alarmArray[ALARM_RIDER] == 2 && currMillis-lastAlarmTime[ALARM_RIDER] > ALARM_GAP_MILLIS)
+	{
+		Serial2.write(VOICE_RIDER_OFF);
+		lastAlarmTime[ALARM_RIDER] = currMillis;
+	}
 	if (alarmArray[ALARM_LEVEL] == 1 && currMillis-lastAlarmTime[ALARM_LEVEL] > ALARM_GAP_MILLIS)
 	{
 		Serial2.write(VOICE_NOT_LEVEL);
@@ -159,6 +170,7 @@ void patternDecode(uint8_t resource,uint16_t first,uint16_t second,uint16_t thir
     alarmArray[ALARM_LOCKED] = 0;                                //reset toggle bit
     alarmArray[ALARM_I2C] = 0;                                //reset toggle bit
     alarmArray[ALARM_LEVEL] = 0;                                //reset toggle bit
+    alarmArray[ALARM_RIDER] = 0;                                //reset toggle bit
     turnOff(resource);   
     return;
   }

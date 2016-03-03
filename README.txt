@@ -148,6 +148,8 @@ v7.5	Support for new Roboclaw firmware which uses CRC for checksum (v4.1.11 and 
 v7.6	Added battery voltage decrease compensation.  Added CRC check for voltage, temperature, and current with Roboclaw controllers.
 
 v7.7	Fixed CRC check for voltage, temperature, and current with Roboclaw controllers.
+
+v7.8	Added alarm for rider sensor.  Fixed LED pins for Mega with L298N_CONTROLLER.
 		
 ***********************************************************************************************************************************		
 		

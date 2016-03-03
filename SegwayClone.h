@@ -161,7 +161,7 @@ Initial values are loaded from KP_OFF, KD_OFF, and MOTOR_MAX_OFF.
 		#define LED_GREEN_PIN		A0
 		#define LED_YELLOW_PIN		5
 		#define LED_RED_PIN			6
-	#elif ((defined(PWM_PWM_CONTROLLER) || defined(PWM_DIR_CONTROLLER)) && !defined(MEGA))
+	#elif ((defined(PWM_PWM_CONTROLLER) || defined(PWM_DIR_CONTROLLER)) && !defined(MEGA)) || (defined(L298N_CONTROLLER) && defined(MEGA))
 		#define LED_GREEN_PIN		4
 		#define LED_YELLOW_PIN		5
 		#define LED_RED_PIN			6

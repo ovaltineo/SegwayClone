@@ -52,7 +52,7 @@ static float last_board_offset = 0;
 static float motor = 0;
 static float Pf, Df, Pf_off, Df_off;
 static int loopcount = 0;
-static uint8_t alarmArray[10];
+static uint8_t alarmArray[11];
 static int remote_active = 0;
 static boolean waitForLevel;
 static boolean waitForEver = false;
@@ -139,19 +139,28 @@ void getPD()
 
 boolean riderIsOn(void)
 {
+	static boolean lastValue = true;
+	boolean value = true;
+	
 #ifdef HX711_DOUT
-	return checkHX711();
+	value = checkHX711();
 #elif defined(RIDER_SENSOR)
 	int state = digitalRead(RIDER_SENSOR);
 	#ifdef INVERT_RIDER_SENSOR
-		return (state);
+		value = state;
 	#else
-		return (!state);
+		value = !state;
 	#endif
-#else
-
-	return (true);
 #endif
+	if (lastValue != value)
+	{
+		lastValue = value;
+		if (lastValue)
+			alarmArray[ALARM_RIDER] = 1;
+		else
+			alarmArray[ALARM_RIDER] = 2;
+	}
+	return (value);
 }
 
 float complementaryFilter(float accel, float gyro, long micros, float filtered_accel, float angle)

@@ -1,0 +1,14 @@
+﻿v7.8	Added alarm for rider sensor.  Fixed LED pins for Mega with L298N_CONTROLLER.
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Your branch is up-to-date with 'origin/master'.
+#
+# Changes to be committed:
+#	modified:   Motors.ino
+#	modified:   README.txt
+#	renamed:    SegwayClone.h.generic -> SegwayClone.h
+#	new file:   SegwayClone.h.ovaltineo
+#	modified:   SegwayClone.ino
+#
+

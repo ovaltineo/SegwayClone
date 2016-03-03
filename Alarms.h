@@ -31,6 +31,7 @@ Resources:
 #define ALARM_LOCKED		6
 #define ALARM_I2C			7
 #define ALARM_LEVEL			8
+#define ALARM_RIDER			9
 
 #define VOICE_BATTERY_1		101
 #define VOICE_BATTERY_2		102
@@ -42,6 +43,8 @@ Resources:
 #define VOICE_I2C			108
 #define VOICE_NOT_LEVEL		109
 #define VOICE_LOCKED		110
+#define VOICE_RIDER_ON		111
+#define VOICE_RIDER_OFF		112
 
 #define ALARM_GAP_MILLIS	4000
 
